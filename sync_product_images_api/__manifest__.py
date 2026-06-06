@@ -4,7 +4,7 @@
     'summary': 'Sincroniza imágenes de productos desde una API externa usando referencia de proveedor',
     'category': 'Product',
     'author': 'Distribuciones Hoyostools',
-    'depends': ['product', 'b4b_sale_order'],
+    'depends': ['product'],
     'data': [
         'views/product_template_view.xml',
     ],
