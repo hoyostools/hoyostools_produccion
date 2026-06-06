@@ -1,0 +1,10 @@
+<odoo>
+<record id="action_sync_images_from_api_multi" model="ir.actions.server">
+<field name="name">Sincronizar imágenes desde API</field>
+<field name="model_id" ref="product.model_product_template"/>
+<field name="binding_model_id" ref="product.model_product_template"/>
+<field name="state">code</field>
+<field name="binding_view_types">list</field>
+<field name="code">records.action_sync_image_from_external_api()</field>
+</record>
+</odoo>
