@@ -26,12 +26,12 @@ class ProductTemplate(models.Model):
         omitidos = []
 
         for product in self:
-            if not product.supplier_internal_reference:
+            if not product.default_code:
                 omitidos.append(f"{product.display_name} (sin referencia proveedor)")
                 continue
 
             payload = {
-                "productCodes": product.supplier_internal_reference
+                "productCodes": product.default_code
             }
 
             try:
@@ -47,9 +47,9 @@ class ProductTemplate(models.Model):
                 continue
 
             items = data['items']
-            product_info = next((p for p in items if p.get('product_code') == product.supplier_internal_reference), None)
+            product_info = next((p for p in items if p.get('product_code') == product.default_code), None)
             if not product_info:
-                omitidos.append(f"{product.display_name} (no se encontró código {product.supplier_internal_reference} en respuesta)")
+                omitidos.append(f"{product.display_name} (no se encontró código {product.default_code} en respuesta)")
                 continue
 
             image_url = product_info.get('product_image_url')
@@ -63,7 +63,7 @@ class ProductTemplate(models.Model):
                 image_data = base64.b64encode(image_response.content)
                 product.write({'image_1920': image_data})
                 sincronizados += 1
-                _logger.info("Imagen sincronizada desde API: %s (%s)", product.name, product.supplier_internal_reference)
+                _logger.info("Imagen sincronizada desde API: %s (%s)", product.name, product.default_code)
             except Exception as e:
                 _logger.error("Error al descargar imagen: %s", str(e))
                 omitidos.append(f"{product.display_name} (error al descargar imagen)")
