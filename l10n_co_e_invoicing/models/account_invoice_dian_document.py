@@ -616,8 +616,8 @@ class AccountInvoiceDianDocument(models.Model):
 
         supplier = self.company_id.partner_id
         customer = self.invoice_id.partner_id
-        NitOFE = supplier.identification_document
-        NitAdq = customer.identification_document
+        NitOFE = supplier.identification_document or supplier.parent_id.identification_document
+        NitAdq = customer.identification_document or customer.parent_id.identification_document
 
         ClTec = False
         SoftwarePIN = False
