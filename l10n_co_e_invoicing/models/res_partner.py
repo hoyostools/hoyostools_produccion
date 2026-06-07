@@ -60,7 +60,7 @@ class ResPartner(models.Model):
 			raise UserError(msg6 % self.name)
 
 
-		if not self.identification_document and self.type != 'contact':
+		if not self.identification_document and self.type == 'contact':
 			raise UserError(msg7 % self.name)
 
 		if not self.email:
@@ -142,7 +142,7 @@ class ResPartner(models.Model):
 		msg3 = _("'%s' does not have a verification digit established.")
 		if not self.document_type_id:
 			raise UserError(msg1 % self.name)
-		if not self.identification_document and self.type != 'contact':
+		if not self.identification_document and self.type == 'contact':
 			raise UserError(msg2 % self.name)
 		if self.document_type_id.code == '31' and not self.check_digit:
 			raise UserError(msg3 % self.name)
