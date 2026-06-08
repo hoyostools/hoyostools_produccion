@@ -13,7 +13,8 @@
         'product',
         'account',
         'base',
-        'stock'
+        'stock',
+        'campos_hoyos',
     ],
 
     'data': [

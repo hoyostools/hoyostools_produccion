@@ -46,6 +46,17 @@
             </field>
         </record>
 
+        <record id="view_order_logistic_form" model="ir.ui.view">
+            <field name="name">view_order_logistic_form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="logistic_service_page"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='idb4b']" position="after">
+                        <field name="b4b" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+
         <record id="view_order_form_problem" model="ir.ui.view">
             <field name="name">problem_order_form</field>
             <field name="model">sale.order</field>
