@@ -2,6 +2,22 @@
 <odoo>
     <data>
 
+        <record id="view_order_form_inherit_ov" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.ov</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="numero_items" readonly="1"/>
+                    <field name="b4b" readonly="1"/>
+                    <field name="servicio_logistico" string="Servilog"/>
+                    <field name="a_procesar" readonly="0"/>
+                    <field name="procesada" readonly="0"/>
+                    <field name="proceso_disponibilidad" widget="boolean_toggle"/>
+                </xpath>
+            </field>
+        </record>
+
         <record id="view_order_logistic_tree" model="ir.ui.view">
             <field name="name">sale.order.tree.logistic.sale.stock</field>
             <field name="model">sale.order</field>
