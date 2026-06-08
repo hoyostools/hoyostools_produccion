@@ -93,11 +93,11 @@ class AccountMove(models.Model):
             ):
                 record.invoice_line_ids._compute_tax_ids()
 
-    def _compute_amount(self):
-        res = super()._compute_amount()
-
-        for record in self:
-            if record.state == 'draft':
-                record.invoice_line_ids._compute_tax_ids()
-
-        return res
+    # def _compute_amount(self):
+    #     res = super()._compute_amount()
+    #
+    #     for record in self:
+    #         if record.state == 'draft':
+    #             record.invoice_line_ids._compute_tax_ids()
+    #
+    #     return res
