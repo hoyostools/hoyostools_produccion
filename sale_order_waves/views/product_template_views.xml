@@ -11,6 +11,7 @@
                     <field name="numero_items" readonly="1"/>
                     <field name="b4b" readonly="1"/>
                     <field name="servicio_logistico" string="Servilog"/>
+                    <field name="problema"/>
                     <field name="a_procesar" readonly="0"/>
                     <field name="procesada" readonly="0"/>
                     <field name="proceso_disponibilidad"/>
