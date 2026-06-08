@@ -21,6 +21,7 @@
         'b4b',
         'point_of_sale',
         'sale_margin',
+        'sales_report_product_image',
     ],
     'data': [
         'views/menu_elementos_tarifa.xml',
