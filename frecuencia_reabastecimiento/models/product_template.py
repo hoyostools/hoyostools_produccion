@@ -49,7 +49,7 @@ class ProductTemplate(models.Model):
             record.regla_min_sugerida = consumo_dia * 4 
     
 
-    @api.depends('regla_min_sugerida', 'cant_pack')
+    # @api.depends('regla_min_sugerida', 'cant_pack')
     def _compute_pacas_sugeridas(self):
         for record in self:
             if record.regla_min_sugerida and record.cant_pack:
@@ -197,7 +197,7 @@ class ProductTemplate(models.Model):
             consumo_dia = (record.promedio_consumo_edi or 0.0) / 24.0
             record.regla_min_sugerida_edi = consumo_dia * 4
 
-    @api.depends('regla_min_sugerida_edi', 'cant_pack')
+    # @api.depends('regla_min_sugerida_edi', 'cant_pack')
     def _compute_pacas_sugeridas_edi(self):
         for record in self:
             if record.regla_min_sugerida_edi and record.cant_pack:
@@ -303,7 +303,7 @@ class ProductTemplate(models.Model):
             consumo_dia = (record.average_ptv or 0.0) / 24.0
             record.regla_min_sugerida_ptv = consumo_dia * 4
 
-    @api.depends('regla_min_sugerida_ptv', 'cant_pack')
+    # @api.depends('regla_min_sugerida_ptv', 'cant_pack')
     def _compute_pacas_sugeridas_ptv(self):
         for record in self:
             if record.regla_min_sugerida_ptv and record.cant_pack:

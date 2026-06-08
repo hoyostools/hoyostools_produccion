@@ -185,7 +185,7 @@ class SaleOrderLine(models.Model):
                 line.precio_unitario_impuesto_excluido = 0.0
 
     @api.onchange('product_uom_qty','cant_pack')
-    @api.depends('product_uom_qty','cant_pack')
+    # @api.depends('product_uom_qty','cant_pack')
     def _compute_total_packs(self):
         for line in self:
             if line.cant_pack != 0 :
