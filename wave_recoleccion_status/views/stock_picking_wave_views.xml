@@ -9,4 +9,14 @@
             </xpath>
         </field>
     </record>
+
+    <record id="view_picking_batch_tree_inherit_recoleccion" model="ir.ui.view">
+        <field name="name">stock.picking.batch.tree.recoleccion</field>
+        <field name="model">stock.picking.batch</field>
+        <field name="inherit_id" ref="stock_picking_batch.stock_picking_wave_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="recoleccion" readonly="1"/>
+            </xpath>
+        </field>
 </odoo>
