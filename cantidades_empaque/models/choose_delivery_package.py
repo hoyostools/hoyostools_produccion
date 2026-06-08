@@ -11,7 +11,7 @@ class ChooseDeliveryPackage(models.TransientModel):
     cajas_a_usar = fields.Integer(string='Cajas a usar:')
     cantidad_maxima_cajas = fields.Integer(string='Cantidad Máxima de Cajas:', related='picking_id.cantidad_maxima_cajas')
     
-    packaging_order_observation = fields.Char(
+    packaging_order_observation = fields.Text(
         string="Totalidad del empaque de la orden",
         related='picking_id.sale_id.packaging_order_observation',
         readonly=False,
