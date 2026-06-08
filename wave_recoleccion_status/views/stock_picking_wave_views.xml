@@ -19,4 +19,5 @@
                 <field name="recoleccion" readonly="1"/>
             </xpath>
         </field>
+    </record>
 </odoo>
