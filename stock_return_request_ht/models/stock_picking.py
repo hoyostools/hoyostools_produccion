@@ -27,10 +27,10 @@ class StockPicking(models.Model):
     def _create_backorder(self):
         """Cuando creamos un pedido pendiente de un picking en una solicitud de devolución, queremos que esté vinculado a la propia solicitud de devolución."""
         backorders = super()._create_backorder()
-        rbo = backorders.filtered("backorder_id.stock_return_request_id")
+        rbo = backorders.filtered("backorder_id.ht_stock_return_request_id")
         for backorder in rbo:
-            backorder.stock_return_request_id = (
-                backorder.backorder_id.stock_return_request_id
+            backorder.ht_stock_return_request_id = (
+                backorder.backorder_id.ht_stock_return_request_id
             )
         return backorders
 
