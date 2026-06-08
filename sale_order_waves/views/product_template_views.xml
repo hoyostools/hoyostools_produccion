@@ -13,7 +13,7 @@
                     <field name="servicio_logistico" string="Servilog"/>
                     <field name="a_procesar" readonly="0"/>
                     <field name="procesada" readonly="0"/>
-                    <field name="proceso_disponibilidad" widget="boolean_toggle"/>
+                    <field name="proceso_disponibilidad"/>
                 </xpath>
             </field>
         </record>
