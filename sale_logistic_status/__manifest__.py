@@ -3,7 +3,7 @@
     "version": "17.0.1.0.0",
     "summary": "Estado logístico automático en orden de venta",
     "author": "Distribuciones Hoyostools",
-    "depends": ["sale_management", "stock"],
+    "depends": ["sale_management", "stock", "sale_order_waves"],
     "data": [
         "views/sale_order_view.xml",
     ],
