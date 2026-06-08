@@ -9,6 +9,5 @@ class SaleOrder(models.Model):
 
     def sh_import_sol(self):
         if self:
-            action = self.env.ref(
-                'sh_import_sol.sh_import_sol_action').sudo().read()[0]
+            action = self.env.ref('sh_import_sol.sh_import_sol_action').sudo().read()[0]
             return action
