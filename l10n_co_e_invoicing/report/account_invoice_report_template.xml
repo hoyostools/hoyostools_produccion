@@ -1,5 +1,81 @@
 <odoo>
   <template id="report_invoice_document_custom" inherit_id="account.report_invoice_document">
+  
+    <xpath expr="//table[@name='invoice_line_table']/thead/tr" position="replace"> 
+      <tr>
+        <th class="text-center">#</th>
+        <th class="text-center">Código Barras</th>
+        <th class="text-center">Referencia</th>
+        <th class="text-start">Descripción</th>
+        <th class="text-end">Cantidad</th>
+        <th class="text-end">P.Unit</th>
+        <th class="text-center">IVA</th>
+        <th class="text-end">P.Total</th>
+      </tr>
+      
+    </xpath> 
+    
+    <xpath expr="//t[@name='account_invoice_line_accountable']" position="replace">
+
+      <t t-if="line.display_type == 'product'" 
+        name="account_invoice_line_accountable">
+
+        <t t-set="net_price"
+          t-value="line.price_unit * (1 - ((line.discount or 0) / 100.0))"/>
+
+        <t t-set="iva_taxes" 
+          t-value="line.tax_ids.filtered(lambda t: 'IVA' in (t.tax_group_id.name or '').upper())"/>
+
+        <td class="text-center"> 
+          <span t-esc="line_index + 1"/>
+        </td>
+
+        <td class="text-center">
+          <t t-if="line.product_id.barcode">
+            <img t-att-src="'/report/barcode/Code128/%s' % line.product_id.barcode" style="width:120px;height:25px;"/>
+          </t> 
+        </td>
+        
+        <td class="text-center">
+          <span t-field="line.product_id.default_code"/>
+        </td>
+        
+        <td>
+          <span t-field="line.product_id.name"/>
+        </td>
+        
+        <td class="text-end">
+          <span t-field="line.quantity"/>
+        </td>
+        
+        <td class="text-end">
+          <span t-esc="net_price"
+                t-options="{
+                  'widget': 'monetary',
+                  'display_currency': o.currency_id
+                }"/>
+        </td>
+        
+        <td class="text-center">
+          <t t-foreach="iva_taxes" t-as="tax">
+              <span t-esc="tax.amount"/>%
+              <t t-if="not tax_last">
+                  ,
+              </t>
+          </t>
+        </td>
+        
+        <td class="text-end">
+          <span t-esc="net_price * line.quantity"
+                t-options="{
+                  'widget': 'monetary',
+                  'display_currency': o.currency_id
+                }"/>
+        </td>
+      </t>
+    </xpath>
+
+
     <xpath expr="//div[contains(@class, 'clearfix')]" position="inside">
       <t t-if="o.dian_document_lines">
         <t t-set="dian_doc" t-value="o.dian_document_lines[0]"/>

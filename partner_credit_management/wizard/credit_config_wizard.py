@@ -9,7 +9,7 @@ class CreditConfigWizard(models.TransientModel):
     partner_id = fields.Many2one("res.partner", string="Cliente", required=True)
 
     credit_only_invoiced = fields.Boolean(string="Solo Facturado")
-    credit_only_sales = fields.Boolean(string="Solo Ventas")
+    credit_only_sales = fields.Boolean(string="Solo Ventas", default=True)
 
     receivable_amount = fields.Float(string="Por Cobrar", readonly=True)
     pending_reconcile_amount = fields.Float(string="Pendiente por Cruzar", readonly=True)

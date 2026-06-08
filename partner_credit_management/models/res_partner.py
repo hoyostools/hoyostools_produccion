@@ -25,7 +25,7 @@ class ResPartner(models.Model):
     # Configuración crédito por contacto principal
     # ---------------------------------------------------------
     credit_only_invoiced = fields.Boolean(string="Solo Facturado")
-    credit_only_sales = fields.Boolean(string="Solo Ventas")
+    credit_only_sales = fields.Boolean(string="Solo Ventas", default=True)
 
     receivable_amount = fields.Float(
         string="Por Cobrar",
