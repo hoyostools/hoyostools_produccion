@@ -19,7 +19,7 @@ class AccountMove(models.Model):
                 move.message_post(body="⛔ La factura no tiene cliente asociado.")
                 continue
 
-            main_partner = move.partner_id.commercial_partner_id
+            main_partner = move.partner_id.parent_id or move.partner_id
             
             if not main_partner.conexion_odoo:
                 # No hacer absolutamente nada
