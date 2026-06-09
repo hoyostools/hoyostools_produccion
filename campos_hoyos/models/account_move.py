@@ -3,6 +3,21 @@ from odoo import models, fields, api
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
+    packaging_order_observation = fields.Char(
+        string="Observación Empaque",
+        readonly=True,
+    )
+
+    servicio_logistico = fields.Boolean(
+        string="Servicio Logístico",
+        readonly=True,
+    )
+
+    b4b = fields.Boolean(
+        string="B4B",
+        readonly=True,
+    )
+
     def action_post(self):
         """
         Al confirmar una factura de proveedor:

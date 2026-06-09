@@ -16,6 +16,17 @@ class SaleOrder(models.Model):
     show_group_total_packs = fields.Integer(string='Total Pacas del Pedido',compute='_compute_total_packs_order', store=True)
     packaging_order_observation = fields.Text(string='Totalidad del empaque de la orden')
     partner_id = fields.Many2one('res.partner', string='Cliente', required=True, domain="[('type', '=', 'contact')]")
+    
+    def _prepare_invoice(self):
+        vals = super()._prepare_invoice()
+
+        vals.update({
+            'packaging_order_observation': self.packaging_order_observation,
+            'servicio_logistico': self.servicio_logistico,
+            'b4b': self.b4b,
+        })
+
+        return vals
 
 
     def _compute_is_user_gerencial(self):
