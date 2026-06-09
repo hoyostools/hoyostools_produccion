@@ -35,7 +35,7 @@ class PurchaseOrderLine(models.Model):
                     rate = (
                         rec.order_id.manual_currency_rate
                         if rec.order_id.type_currency == "inverse_company_rate"
-                        else (1.0 / rec.order_id.manual_currency_rate)
+                        else (1.0 / rec.order_id.manual_currency_rate if rec.order_id.manual_currency_rate else 1)
                     )
                     rec.subtotal_company_currency = rec.price_subtotal * rate
                 # default rate currency
