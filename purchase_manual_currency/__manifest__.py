@@ -9,7 +9,7 @@
     "author": "Ecosoft, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/purchase-workflow",
     "license": "AGPL-3",
-    "depends": ["purchase", "account_manual_currency"],
+    "depends": ["purchase"],
     "data": [
         "views/res_config_settings_views.xml",
         "views/purchase_views.xml",
