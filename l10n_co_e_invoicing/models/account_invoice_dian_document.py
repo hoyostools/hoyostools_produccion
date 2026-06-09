@@ -614,10 +614,10 @@ class AccountInvoiceDianDocument(models.Model):
                 LossRiskResponsibilityCode = self.invoice_id.invoice_incoterm_id.code
                 LossRisk = self.invoice_id.invoice_incoterm_id.name
 
-        supplier = self.company_id.partner_id
-        customer = self.invoice_id.partner_id
-        NitOFE = supplier.identification_document or supplier.parent_id.identification_document
-        NitAdq = customer.identification_document or customer.parent_id.identification_document
+        supplier = self.company_id.partner_id if not self.company_id.partner_id.parent_id else self.company_id.partner_id.parent_id
+        customer = self.invoice_id.partner_id if not self.invoice_id.partner_id.parent_id else self.invoice_id.partner_id.parent_id
+        NitOFE = supplier.identification_document
+        NitAdq = customer.identification_document
 
         ClTec = False
         SoftwarePIN = False
