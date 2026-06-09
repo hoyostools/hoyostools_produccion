@@ -121,7 +121,6 @@
                     <field name="idb4b" optional="hide"/>
                     <field name="servicio_logistico" optional="hide"/>
                     <field name="nombre_logistico" optional="hide"/>
-                    <field name="b4b" optional="hide"/>
                 </xpath>
             </field>
         </record>
