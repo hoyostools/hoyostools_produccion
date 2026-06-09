@@ -22,16 +22,17 @@ class PosOrderLine(models.Model):
         res._get_tax_ids_after_fiscal_position()
         return res
 
-    # @api.constrains('order_id','order_id.fiscal_position_id')
-    # @api.depends('order_id', 'order_id.fiscal_position_id')
-    # def _get_tax_ids_after_fiscal_position(self):
-    #     super()._get_tax_ids_after_fiscal_position()
-    #     for line in self:
-    #         delete_taxes = line.order_id.lines.tax_ids_after_fiscal_position.filtered(
-    #             lambda t: t.base_amount > (line.order_id.amount_total - line.order_id.amount_tax) and t.base_check == True)
-    #         reteiva_taxes = line.order_id.lines.tax_ids_after_fiscal_position.filtered(
-    #             lambda t: t.reteiva == True)
-    #         if delete_taxes:
-    #             line.order_id.lines.tax_ids_after_fiscal_position -= delete_taxes
-    #         if reteiva_taxes and line.order_id.fiscal_position_id.aplica_reteiva:
-    #             line.order_id.lines.tax_ids_after_fiscal_position += reteiva_taxes.impuesto_reteiva
+    @api.constrains('order_id','order_id.fiscal_position_id')
+    @api.depends('order_id', 'order_id.fiscal_position_id')
+    def _get_tax_ids_after_fiscal_position(self):
+        self.order_id.fiscal_position_id = self.order_id.partner_id.property_account_position_id
+        super()._get_tax_ids_after_fiscal_position()
+        for line in self:
+            delete_taxes = line.order_id.lines.tax_ids_after_fiscal_position.filtered(
+                lambda t: t.base_amount > (line.order_id.amount_total - line.order_id.amount_tax) and t.base_check == True)
+            reteiva_taxes = line.order_id.lines.tax_ids_after_fiscal_position.filtered(
+                lambda t: t.reteiva == True)
+            if delete_taxes:
+                line.order_id.lines.tax_ids_after_fiscal_position -= delete_taxes
+            if reteiva_taxes and line.order_id.fiscal_position_id.aplica_reteiva:
+                line.order_id.lines.tax_ids_after_fiscal_position += reteiva_taxes.impuesto_reteiva
