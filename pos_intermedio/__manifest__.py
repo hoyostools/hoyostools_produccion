@@ -4,7 +4,7 @@
     "category": "Customization",
     "summary": "modulo intermedio para el POS",
     "author": "Brawil Solutions Sas",
-    "depends": ['sale', 'product', 'pos_sale', 'point_of_sale', 'account', 'base_automation'],
+    "depends": ['sale', 'product', 'pos_sale', 'point_of_sale', 'account'],
     "data": [
     ],
     # 'assets': {
