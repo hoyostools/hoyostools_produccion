@@ -29,5 +29,16 @@
             </field>
         </record>
 
+        <record id="stock_vpicktree_inherit_warehouse_id" model="ir.ui.view">
+            <field name="name">stock.vpicktree.inherit.warehouse.id</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='location_dest_id']" position="after">
+                    <field name="warehouse_id" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+
     </data>
 </odoo>
