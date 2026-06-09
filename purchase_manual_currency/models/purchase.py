@@ -52,7 +52,7 @@ class PurchaseOrder(models.Model):
                 rate = (
                     rec.manual_currency_rate
                     if rec.type_currency == "inverse_company_rate"
-                    else (1.0 / rec.manual_currency_rate)
+                    else (1.0 / rec.manual_currency_rate if rec.manual_currency_rate else 1)
                 )
                 rec.total_company_currency = rec.amount_total * rate
             # default rate currency
