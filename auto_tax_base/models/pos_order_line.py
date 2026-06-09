@@ -11,21 +11,19 @@ class PosOrder(models.Model):
 class PosOrderLine(models.Model):
     _inherit = 'pos.order.line'
 
-    # def write(self,vals):
-    #     res = super().write(vals)
-    #     if 'tax_ids_after_fiscal_position' not in vals:
-    #         self._get_tax_ids_after_fiscal_position()
-    #     return res
-
-    def create(self,vals):
+    def create(self, vals):
         res = super().create(vals)
+
+        if res.order_id and res.order_id.partner_id:
+            res.order_id.fiscal_position_id = (
+                res.order_id.partner_id.property_account_position_id
+            )
+
         res._get_tax_ids_after_fiscal_position()
+
         return res
 
-    @api.constrains('order_id')
-    @api.depends('order_id')
     def _get_tax_ids_after_fiscal_position(self):
-        self.order_id.fiscal_position_id = self.order_id.partner_id.property_account_position_id
         super()._get_tax_ids_after_fiscal_position()
         for line in self:
             delete_taxes = line.order_id.lines.tax_ids_after_fiscal_position.filtered(
