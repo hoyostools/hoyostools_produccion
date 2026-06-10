@@ -137,6 +137,8 @@ class StockReturnRequest(models.Model):
     
     authorized = fields.Boolean(string="Autorizado")
     no_validate_history = fields.Boolean(string="No validar historial")
+    transportadora_rma = fields.Char(string="Transportadora RMA" )
+    fecha_sube_rma = fields.Date(string="Fecha de Sube")
     
     estimated_total = fields.Monetary(
         string="Mercancia Asegurada por",

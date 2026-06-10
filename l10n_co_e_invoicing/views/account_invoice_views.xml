@@ -15,11 +15,13 @@
             </xpath>
 
             <xpath expr="//field[@name='invoice_date']" position="after">
+                <field name="date" invisible="move_type != 'in_invoice'"/>
                 <field name="approve_token" invisible="1"/>
                 <field name="invoice_rating" readonly="1"/>
                 <field name="refuse_text" invisible="invoice_rating != 'refuse'" readonly="1"/>
                 <field name="move_type"/>
-                <field name="send_invoice_to_dian" invisible="1"/><field name="cufe_cude" invisible="move_type not in ('in_invoice', 'in_refund')"/>
+                <field name="send_invoice_to_dian" invisible="1"/>
+                <field name="cufe_cude" invisible="move_type not in ('in_invoice', 'in_refund')"/>
                 <field name="operation_type"
                     invisible="move_type not in ('out_invoice', 'out_refund')"
                     readonly="state != 'draft'"

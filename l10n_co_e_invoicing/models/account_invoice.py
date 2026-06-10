@@ -122,6 +122,7 @@ class AccountInvoice(models.Model):
     orden_compra = fields.Char(string='Orden de compra')
     order_reference = fields.Char(string='Orden de Referencia')
     cufe_cude = fields.Char(string='CUFE/CUDE', tracking=True)
+    date = fields.Date(string='Fecha Recibo', tracking=True)
 
     @api.depends('dian_document_lines')
     def _get_status_doc_dian(self):

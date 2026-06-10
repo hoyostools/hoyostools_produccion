@@ -139,6 +139,8 @@
                                 <field name="package_unit" readonly="state != 'draft'"/>
                                 <field name="pickup_method" readonly="state != 'draft'"/>
                                 <field name="invoice_reference" readonly="state != 'draft'"/>
+                                <field name="transportadora_rma" readonly="state != 'draft'"/>
+                                <field name="fecha_sube_rma" readonly="state != 'draf'"/>
                             </group>
                         </page>
                         <page string="Autorizaciones">
