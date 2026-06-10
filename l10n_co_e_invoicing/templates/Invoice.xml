@@ -291,6 +291,22 @@
 		<cbc:Date>{{PaymentExchangeRate.Date}}</cbc:Date>
 	</cac:PaymentExchangeRate>
     {% endif %}
+    {% if AllowanceTotal and AllowanceTotal.amount > 0 %}
+    <cac:AllowanceCharge>
+        <cbc:ChargeIndicator>false</cbc:ChargeIndicator>
+        <cbc:AllowanceChargeReasonCode>02</cbc:AllowanceChargeReasonCode>
+        <cbc:AllowanceChargeReason>DESCUENTO GENERAL</cbc:AllowanceChargeReason>
+        <cbc:MultiplierFactorNumeric>
+            {{ '{:.2f}'.format(AllowanceTotal.percent) }}
+        </cbc:MultiplierFactorNumeric>
+        <cbc:Amount currencyID="COP">
+            {{ '{:.2f}'.format(AllowanceTotal.amount) }}
+        </cbc:Amount>
+        <cbc:BaseAmount currencyID="COP">
+            {{ '{:.2f}'.format(AllowanceTotal.base) }}
+        </cbc:BaseAmount>
+    </cac:AllowanceCharge>
+    {% endif %}
 	{% for TaxTotalID, TaxTotal in TaxesTotal.items() -%}
 	<cac:TaxTotal>
 		<cbc:TaxAmount currencyID="COP">{{'{:.2f}'.format(TaxTotal.total)}}</cbc:TaxAmount>
@@ -337,7 +353,9 @@
 		<cbc:LineExtensionAmount currencyID="COP">{{LineExtensionAmount}}</cbc:LineExtensionAmount>
 		<cbc:TaxExclusiveAmount currencyID="COP">{{TaxExclusiveAmount}}</cbc:TaxExclusiveAmount>
 		<cbc:TaxInclusiveAmount currencyID="COP">{{TaxInclusiveAmount}}</cbc:TaxInclusiveAmount>
-		<cbc:AllowanceTotalAmount currencyID="COP">0.00</cbc:AllowanceTotalAmount>
+		<cbc:AllowanceTotalAmount currencyID="COP">
+            {{ '{:.2f}'.format(AllowanceTotal.amount if AllowanceTotal else 0) }}
+        </cbc:AllowanceTotalAmount>
 		<cbc:ChargeTotalAmount currencyID="COP">0.00</cbc:ChargeTotalAmount>
 		<cbc:PrepaidAmount currencyID="COP">0.00</cbc:PrepaidAmount>
 		<cbc:PayableAmount currencyID="COP">{{PayableAmount}}</cbc:PayableAmount>
@@ -358,7 +376,7 @@
 			</cac:AlternativeConditionPrice>
 		</cac:PricingReference>
 		{% endif %}
-		
+		{% if InvoiceLine.AllowanceChargeAmount | float > 0 %}
 		<cac:AllowanceCharge>
 			<cbc:ID>1</cbc:ID>
 			<cbc:ChargeIndicator>false</cbc:ChargeIndicator>
@@ -367,7 +385,7 @@
 			<cbc:Amount currencyID="COP">{{InvoiceLine.AllowanceChargeAmount}}</cbc:Amount>
 			<cbc:BaseAmount currencyID="COP">{{InvoiceLine.AllowanceChargeBaseAmount}}</cbc:BaseAmount>
 		</cac:AllowanceCharge>
-	
+	    {% endif %}
 		{% for TaxTotalID, TaxTotal in InvoiceLine.TaxesTotal.items() -%}
 			
 			<cac:TaxTotal>

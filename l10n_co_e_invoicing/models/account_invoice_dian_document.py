@@ -644,7 +644,7 @@ class AccountInvoiceDianDocument(models.Model):
             amount_untaxed = self.invoice_id.amount_untaxed
             DocumentCurrencyCode = self.invoice_id.currency_id.name
 
-        ValFac = amount_untaxed
+        ValFac = sum(line.price_subtotal for line in self.invoice_id.invoice_line_ids.filtered(lambda l: l.price_subtotal > 0)) if self.invoice_id.invoice_line_ids.filtered(lambda l: l.price_subtotal > 0) else amount_untaxed
         try:
             ValImp1 = einvoicing_taxes['TaxesTotal']['01']['total']
         except:
@@ -658,9 +658,30 @@ class AccountInvoiceDianDocument(models.Model):
         except:
             ValImp3 = 0
         TaxInclusiveAmount = ValFac + ValImp1 + ValImp2 + ValImp3
+        TaxInclusiveAmountFinal = TaxInclusiveAmount
         # El valor a pagar puede verse afectado, por anticipos, y descuentos y
         # cargos a nivel de factura
         PayableAmount = TaxInclusiveAmount
+        total_base = 0
+        total_descuento = 0
+
+        for line in self.invoice_id.invoice_line_ids.filtered(
+                lambda x: x.display_type not in ('line_section', 'line_note')):
+            if line.price_subtotal_cop > 0:
+                total_base += line.price_subtotal_cop
+            elif line.price_subtotal_cop < 0:
+                total_descuento += abs(line.price_subtotal_cop)
+        AllowanceTotal = None
+        if total_descuento > 0:
+            AllowanceTotal = {
+                'base': total_base,
+                'amount': total_descuento,
+                'percent': (total_descuento / total_base) * 100 if total_base else 0
+            }
+            payable = float(PayableAmount)
+            payable -= total_descuento
+            TaxInclusiveAmountFinal = TaxInclusiveAmount - total_descuento
+            PayableAmount = TaxInclusiveAmountFinal
         cufe_cude = global_functions.get_cufe_cude(
             ID,
             IssueDate,
@@ -672,7 +693,7 @@ class AccountInvoiceDianDocument(models.Model):
             str('{:.2f}'.format(ValImp2)),
             '03',
             str('{:.2f}'.format(ValImp3)),
-            str('{:.2f}'.format(TaxInclusiveAmount)),
+            str('{:.2f}'.format(TaxInclusiveAmountFinal)),
             NitOFE,
             NitAdq,
             ClTec,
@@ -715,7 +736,7 @@ class AccountInvoiceDianDocument(models.Model):
             'UUID': cufe_cude['CUFE/CUDE'],
             'IssueDate': IssueDate,
             'IssueTime': IssueTime,
-            'LineCountNumeric': len(self.invoice_id.invoice_line_ids.filtered(lambda x: x.display_type not in ('line_section', 'line_note'))),
+            'LineCountNumeric': len(self.invoice_id.invoice_line_ids.filtered(lambda x: x.display_type not in ('line_section', 'line_note') and x.price_subtotal_cop > 0)),
             'DocumentCurrencyCode': DocumentCurrencyCode,
             'CurrencyID': CurrencyID,
             'Delivery': customer._get_delivery_values(),
@@ -732,11 +753,12 @@ class AccountInvoiceDianDocument(models.Model):
             'PaymentDueDate': self.invoice_id.invoice_date_due,
             'TaxesTotal': einvoicing_taxes['TaxesTotal'],
             'WithholdingTaxesTotal': einvoicing_taxes['WithholdingTaxesTotal'],
-            'LineExtensionAmount': '{:.2f}'.format(amount_untaxed),
-            'TaxExclusiveAmount': '{:.2f}'.format(amount_untaxed),
+            'LineExtensionAmount': '{:.2f}'.format(sum(line.price_subtotal for line in self.invoice_id.invoice_line_ids.filtered(lambda l: l.price_subtotal > 0))),
+            'TaxExclusiveAmount': '{:.2f}'.format(sum(line.price_subtotal for line in self.invoice_id.invoice_line_ids.filtered(lambda l: l.price_subtotal > 0))),
             # ValTot
             'TaxInclusiveAmount': '{:.2f}'.format(TaxInclusiveAmount),
             'PayableAmount': '{:.2f}'.format(PayableAmount),
+            'AllowanceTotal': AllowanceTotal,
             'OrderReference': self.invoice_id.orden_compra or '',
             'TRM': trm,
         }

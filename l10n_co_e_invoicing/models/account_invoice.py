@@ -613,6 +613,9 @@ class AccountInvoice(models.Model):
             if discount_line.price_subtotal_cop != 0 and discount_line.discount != 0:
                 disc_amount = (discount_line.price_subtotal_cop * discount_line.discount) / 100
 
+            if discount_line.price_subtotal_cop < 0:
+                continue
+
             if discount_line.price_unit_cop != 0 and discount_line.quantity != 0:
                 total_wo_disc = abs(discount_line.price_unit_cop) * discount_line.quantity
 
@@ -643,11 +646,11 @@ class AccountInvoice(models.Model):
             invoice_lines[count]['unitCode'] = discount_line.product_uom_id.product_uom_code_id.code
             invoice_lines[count]['Quantity'] = '{:.2f}'.format(discount_line.quantity)
             invoice_lines[count]['PriceAmount'] = '{:.2f}'.format(reference_price)
-            invoice_lines[count]['LineExtensionAmount'] = '{:.2f}'.format(discount_line.price_subtotal_cop)
+            invoice_lines[count]['LineExtensionAmount'] = '{:.2f}'.format(abs(discount_line.price_subtotal_cop))
             invoice_lines[count]['PricingReference'] = '{:.2f}'.format(discount_line.product_id.with_company(self.company_id).standard_price or 0.0)
             invoice_lines[count]['MultiplierFactorNumeric'] = '{:.2f}'.format(100)
-            invoice_lines[count]['AllowanceChargeAmount'] = '{:.2f}'.format(discount_line.price_subtotal_cop)
-            invoice_lines[count]['AllowanceChargeBaseAmount'] = '{:.2f}'.format(discount_line.price_subtotal_cop)
+            invoice_lines[count]['AllowanceChargeAmount'] = '{:.2f}'.format(abs(discount_line.price_subtotal_cop))
+            invoice_lines[count]['AllowanceChargeBaseAmount'] = '{:.2f}'.format(abs(discount_line.price_subtotal_cop))
             invoice_lines[count]['TaxesTotal'] = {}
             invoice_lines[count]['WithholdingTaxesTotal'] = {}
             invoice_lines[count]['SellersItemIdentification'] = discount_line.product_id.default_code
@@ -697,14 +700,14 @@ class AccountInvoice(models.Model):
                 invoice_lines[count]['TaxesTotal']['01']['name'] = 'IVA'
                 invoice_lines[count]['TaxesTotal']['01']['taxes'] = {}
                 invoice_lines[count]['TaxesTotal']['01']['taxes']['0.00'] = {}
-                invoice_lines[count]['TaxesTotal']['01']['taxes']['0.00']['base'] = discount_line.price_subtotal_cop
+                invoice_lines[count]['TaxesTotal']['01']['taxes']['0.00']['base'] = abs(discount_line.price_subtotal_cop)
                 invoice_lines[count]['TaxesTotal']['01']['taxes']['0.00']['amount'] = 0
 
             invoice_lines[count]['BrandName'] = brand_name
             invoice_lines[count]['ModelName'] = model_name
             invoice_lines[count]['ItemDescription'] = str(discount_line.name) if discount_line.name != discount_line.product_id.display_name else discount_line.product_id.name or ''
             invoice_lines[count]['InformationContentProviderParty'] = (discount_line._get_information_content_provider_party_values())
-            invoice_lines[count]['PriceAmount'] = '{:.2f}'.format(discount_line.price_unit_cop)
+            invoice_lines[count]['PriceAmount'] = '{:.2f}'.format(abs(discount_line.price_unit_cop))
 
             count += 1
         for invoice_line in self.invoice_line_ids.filtered(lambda x: x.display_type not in ('line_section', 'line_note') and x.id not in id_exclude):
@@ -803,13 +806,13 @@ class AccountInvoice(models.Model):
                                     tax_id.amount,
                                     invoice_lines[count]['TaxesTotal']))
 
-            if '01' not in invoice_lines[count]['TaxesTotal']:
+            if '01' not in invoice_lines[count]['TaxesTotal'] :
                 invoice_lines[count]['TaxesTotal']['01'] = {}
                 invoice_lines[count]['TaxesTotal']['01']['total'] = 0
                 invoice_lines[count]['TaxesTotal']['01']['name'] = 'IVA'
                 invoice_lines[count]['TaxesTotal']['01']['taxes'] = {}
                 invoice_lines[count]['TaxesTotal']['01']['taxes']['0.00'] = {}
-                invoice_lines[count]['TaxesTotal']['01']['taxes']['0.00']['base'] = invoice_line.price_subtotal_cop
+                invoice_lines[count]['TaxesTotal']['01']['taxes']['0.00']['base'] = abs(invoice_line.price_subtotal_cop)
                 invoice_lines[count]['TaxesTotal']['01']['taxes']['0.00']['amount'] = 0
 
             invoice_lines[count]['BrandName'] = brand_name

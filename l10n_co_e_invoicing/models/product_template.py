@@ -7,6 +7,8 @@ import odoo.addons.decimal_precision as dp
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
+    producto_regalo = fields.Boolean('Producto Regalo')
+
     @api.model
     def _default_product_scheme(self):
         return self.env['product.scheme'].search([('code', '=', '999' )]).id
