@@ -13,7 +13,7 @@ from . import product_scheme
 from . import product_template
 from . import einvoice_notification_group
 from . import account_debit
-from . import pos_order
+# from . import pos_order
 from . import pos_payment_method
 from . import account_payment_term
 
