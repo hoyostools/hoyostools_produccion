@@ -3,10 +3,10 @@ from odoo import fields, models, api, _
 class PosOrderWave(models.Model):
     _inherit = 'pos.order'
 
-    def _process_saved_order(self, draft):
-        res = super()._process_saved_order(draft)
-        self.crear_oleadas_piso_pos()
-        return res
+    # def _process_saved_order(self, draft):
+    #     res = super()._process_saved_order(draft)
+    #     self.crear_oleadas_piso_pos()
+    #     return res
 
     def crear_oleadas_piso_pos(self):
 

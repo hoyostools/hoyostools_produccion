@@ -277,7 +277,7 @@ class AccountInvoiceDianDocument(models.Model):
         attach_ids = [attachment.id]
         
 
-        template.send_mail(self.invoice_id.id, force_send=True, email_values={
+        template.send_mail(self.invoice_id.id, force_send=False, email_values={
 
                 'attachment_ids': [attachment.id],
 
