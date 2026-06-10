@@ -271,7 +271,7 @@ class AccountInvoice(models.Model):
                     record.env.cr.commit()
                     if record.send_invoice_to_dian == '0':
                         if record.invoice_type_code in ('01', '02', '03'):
-                            dian_document.action_sent_zipped_file()
+                        # dian_document.action_sent_zipped_file()
                         elif record.invoice_type_code == '04':
                             dian_document.action_send_mail()
 
