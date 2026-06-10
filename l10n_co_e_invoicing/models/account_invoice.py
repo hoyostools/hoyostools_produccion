@@ -262,6 +262,7 @@ class AccountInvoice(models.Model):
                     else:
                         type_account = 'invoice'
                     dian_document_obj = self.env['account.invoice.dian.document'].search([(('invoice_id','=', record.id),('company_id','=',record.company_id.id),('type_account','=',type_account))])
+                    dian_document = self.env['account.invoice.dian.document'].search([(('invoice_id','=', record.id),('company_id','=',record.company_id.id),('type_account','=',type_account))])
                     if not dian_document_obj:
                         dian_document = dian_document_obj.create({
                             'invoice_id': record.id,
