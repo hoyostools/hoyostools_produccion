@@ -200,8 +200,7 @@ class AccountInvoice(models.Model):
                 if move.dian_document_lines:
                     move.dian_document_lines.action_GetStatus()
 
-                if not move.journal_id.pos_invoice:
-                    move.compute_electronic_invoice()
+                move.compute_electronic_invoice()
 
             except Exception as e:
                 _logger.warning(
