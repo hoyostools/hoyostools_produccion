@@ -27,10 +27,10 @@ class PosOrder(models.Model):
             payment_moves = order._apply_invoice_payments(order.session_id.state == 'closed')
 
             # Send and Print
-            if self.env.context.get('generate_pdf', True):
-                template = self.env.ref(new_move._get_mail_template())
-                if template:
-                    new_move._generate_pdf_and_send_invoice(template)
+            # if self.env.context.get('generate_pdf', True):
+            #     template = self.env.ref(new_move._get_mail_template())
+            #     if template:
+            #         new_move._generate_pdf_and_send_invoice(template)
 
             if order.session_id.state == 'closed':  # If the session isn't closed this isn't needed.
                 # If a client requires the invoice later, we need to revers the amount from the closing entry, by making a new entry for that.
