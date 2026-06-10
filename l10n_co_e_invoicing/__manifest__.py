@@ -46,7 +46,7 @@ Características:
         "data/product_scheme_data.xml",
 
         # Automatizaciones
-        "data/cron_acp_tacita_dian.xml",
+        # "data/cron_acp_tacita_dian.xml",
     ],
     
     "installable": True,

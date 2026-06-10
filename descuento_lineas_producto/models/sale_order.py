@@ -23,7 +23,7 @@ class SaleOrderLine(models.Model):
                 if not self.discount <= self.product_template_id.descuento_rango:
                     self.discount = self.product_template_id.descuento_rango
             if self.product_uom_qty > valor_a:
-                if not self.discount <= self.product_template_id.descuento_mayor:
+                if not (self.discount <= self.product_template_id.descuento_mayor and self.discount != 0):
                     self.discount = self.product_template_id.descuento_mayor
             if self.product_uom_qty < valor_b:
                 self.discount = self.discount
@@ -58,20 +58,16 @@ class SaleOrderLine(models.Model):
     @api.model
     def create(self, values):
         res = super(SaleOrderLine, self).create(values)
-        order = self.env['sale.order'].browse(values.get('order_id'))
-
-        if not order.website_id:
-            for record in res:
-                record.calculate_discount_general()
+        for record in res:
+            record.calculate_discount_general()
         return res
 
     def write(self, values):
-        if not self.order_id.website_id:
-            if 'product_uom_qty' in values and values['product_uom_qty']:
-                if 'discount' in values:
-                    values['discount'] = self.calculate_discount_write(values['product_uom_qty'], values['discount'], 1)
-                else:
-                    values['discount'] = self.calculate_discount_write(values['product_uom_qty'], 0, 0)
+        if 'product_uom_qty' in values and values['product_uom_qty']:
+            if 'discount' in values:
+                values['discount'] = self.calculate_discount_write(values['product_uom_qty'], values['discount'], 1)
+            else:
+                values['discount'] = self.calculate_discount_write(values['product_uom_qty'], 0, 0)
         res = super(SaleOrderLine, self).write(values)
         return res
 

@@ -16,8 +16,6 @@ class SaleOrderLine(models.Model):
             res._compute_tax_id()
         return res
 
-    @api.depends('product_id', 'company_id')
-    @api.constrains('price_subtotal','product_uom_qty')
     def _compute_tax_id(self):
         super()._compute_tax_id()
         for line in self:
