@@ -37,7 +37,7 @@
     'assets': {
         'point_of_sale._assets_pos': [
             'pos_receipt_extend/static/src/xml/OrderReceipt.xml',
-            'pos_receipt_extend/static/src/js/PosOrder.js',
+            'pos_receipt_extend/static/src/**/*',
         ]
     },
     'images': ['static/description/banner.png'],
