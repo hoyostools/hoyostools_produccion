@@ -8,6 +8,9 @@
                 <page name="einvoicing" string="E-Invoicing">
                     <group>
                         <group>
+                            <field name="producto_regalo"/>
+                        </group>
+                        <group>
                             <field name="brand_name"/>
                             <field name="model_name"/>
                         </group>
