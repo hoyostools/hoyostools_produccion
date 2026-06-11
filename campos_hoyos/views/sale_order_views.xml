@@ -125,6 +125,17 @@
             </field>
         </record>
 
+        <record id="view_sales_order_filter_inherit_idb4b" model="ir.ui.view">
+            <field name="name">sale.order.search.inherit.idb4b</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="idb4b"/>
+                </xpath>
+            </field>
+        </record>
+
         <record id="view_order_tree_inherit_quotation" model="ir.ui.view">
             <field name="name">view.order.tree.quotation</field>
             <field name="model">sale.order</field>
