@@ -38,7 +38,7 @@ class PosSession(models.Model):
         """Used to override the default settings for loading fields"""
         return {
             'search_params': {
-                'fields': ['customer_name',
+                'fields': ['customer_name','cufe_cude_pos','img_cufe',
                            'customer_address', 'customer_mobile',
                            'customer_phone', 'customer_email', 'customer_vat',
                            'customer_details'],

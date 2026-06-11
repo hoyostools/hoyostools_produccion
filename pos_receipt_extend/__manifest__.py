@@ -30,18 +30,17 @@
     'website': "https://www.cybrosys.com",
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',
-    'depends': ['point_of_sale', 'sale'],
+    'depends': ['point_of_sale', 'sale','l10n_co_e_invoicing'],
     'data': [
         'views/res_config_settings_views.xml',
     ],
     'assets': {
         'point_of_sale._assets_pos': [
             'pos_receipt_extend/static/src/xml/OrderReceipt.xml',
-            'pos_receipt_extend/static/src/js/pos_order_receipt.js',
-            'pos_receipt_extend/static/src/js/payment.js',
+            'pos_receipt_extend/static/src/js/PosOrder.js',
         ]
     },
-    'images': ['static/description/banner.jpg'],
+    'images': ['static/description/banner.png'],
     'license': 'LGPL-3',
     'installable': True,
     'application': False,
