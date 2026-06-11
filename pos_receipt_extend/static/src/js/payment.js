@@ -32,8 +32,8 @@ patch(PaymentScreen.prototype, {
 
     const currentOrder = this.pos.selectedOrder;
 
-    this.pos.cufe = currentOrder?.cufe || "";
-    this.pos.img_cufe = currentOrder?.img_cufe || "";
+    this.pos.cufe = lastOrder?.cufe || "";
+    this.pos.img_cufe = lastOrder?.img_cufe || "";
 
     return receipt_order;
 }
