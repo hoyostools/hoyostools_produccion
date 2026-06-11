@@ -13,40 +13,28 @@ patch(PaymentScreen.prototype, {
         this.pos = usePos();
       },
     async validateOrder(isForceValidate) {
-//    extending  the validate order to add the below fields
-        let receipt_order = await super.validateOrder(arguments);
-        var receipt_number = this.pos.selectedOrder.name;
-        var orders = this.env.services.pos.selectedOrder;
-        const data = this.env.services.pos.session_orders;
-        var length = data.length-1;
-        var order = data[length];
-        var mobile = order.customer_mobile;
-        var phone = order.customer_phone;
-        var email = order.customer_email;
-        var vat = order.customer_vat;
-        var address = order.customer_address;
-        var name = order.customer_name;
-        var customer_details = order.customer_details;
-        var self = this;
-        var cufe_cude = order.account_move.dian_document_lines.cufe_cude;
-        this.pos.customer_details = order.customer_details;
-        this.pos.mobile = order.customer_mobile;
-        this.pos.phone = order.customer_phone;
-        this.pos.email = order.customer_email;
-        this.pos.vat = order.customer_vat;
-        this.pos.address = order.customer_address;
-        this.pos.name = order.customer_name;
-        this.pos.cufe_cude = order.account_move.dian_document_lines.cufe_cude;
-        // Llamar al método original de Odoo POS
-        const receipt_order = await super.validateOrder(...arguments);
 
-        // Obtener la orden actual seleccionada
-        const order = this.pos.selectedOrder;
+    var receipt_number = this.pos.selectedOrder.name;
+    const data = this.env.services.pos.session_orders;
+    var length = data.length - 1;
+    var lastOrder = data[length];
 
-        // Si quieres, puedes guardarlo en this.pos para usarlo en otro lugar
-        this.pos.cufe = order?.cufe || "";
-        this.pos.img_cufe = order?.img_cufe || "";
+    this.pos.customer_details = lastOrder.customer_details;
+    this.pos.mobile = lastOrder.customer_mobile;
+    this.pos.phone = lastOrder.customer_phone;
+    this.pos.email = lastOrder.customer_email;
+    this.pos.vat = lastOrder.customer_vat;
+    this.pos.address = lastOrder.customer_address;
+    this.pos.name = lastOrder.customer_name;
+    this.pos.cufe_cude = lastOrder.account_move?.dian_document_lines?.cufe_cude;
 
-        return receipt_order;
-    },
+    const receipt_order = await super.validateOrder(isForceValidate);
+
+    const currentOrder = this.pos.selectedOrder;
+
+    this.pos.cufe = currentOrder?.cufe || "";
+    this.pos.img_cufe = currentOrder?.img_cufe || "";
+
+    return receipt_order;
+}
 });
