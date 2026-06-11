@@ -14,3 +14,4 @@ from . import stock_location
 from . import stock_quant
 from . import stock_scrap
 from . import account_payment
+from . import res_bank

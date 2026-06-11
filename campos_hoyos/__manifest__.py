@@ -24,6 +24,7 @@
         'sales_report_product_image',
     ],
     'data': [
+        'views/res_bank_views.xml',
         'views/menu_elementos_tarifa.xml',
         'views/product_template_views.xml',
         'views/account_payment.xml',
