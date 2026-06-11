@@ -45,6 +45,7 @@
 
                         <group>
                             <field name="packaging_order_observation" readonly="1"/>
+                            <field name="notas_logisticas" readonly="1"/>
                         </group>
 
                     </group>

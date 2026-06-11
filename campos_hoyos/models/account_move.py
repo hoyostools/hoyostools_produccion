@@ -18,6 +18,11 @@ class AccountMove(models.Model):
         readonly=True,
     )
 
+    notas_logisticas = fields.Char(
+        string="Notas Logisticas",
+        readonly=True,
+    )
+
     def action_post(self):
         """
         Al confirmar una factura de proveedor:

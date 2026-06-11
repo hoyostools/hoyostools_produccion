@@ -24,6 +24,7 @@ class SaleOrder(models.Model):
             'packaging_order_observation': self.packaging_order_observation,
             'servicio_logistico': self.servicio_logistico,
             'b4b': self.b4b,
+            'notas_logisticas': self.notas_logisticas,
         })
 
         return vals

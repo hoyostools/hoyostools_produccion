@@ -22,7 +22,7 @@
                                     <field name="city_logistica"/>
                                     <field name="state_logistico"/>
                                     <field name="phone_logistico"/>
-                                    <field name="guia_url"/>
+                                    <field name="guia_url" widget="url"/>
                                     <field name="fecha_sube" readonly="1"/>
                                     <field name="transportadora" readonly="1"/>
                                 </group>
