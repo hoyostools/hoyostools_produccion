@@ -1,4 +1,4 @@
-## Module <pos_receipt_extend>
+## Module <pos_receipt_extend_17>
 
 #### 10.01.2024
 #### Version 17.0.1.0.0
