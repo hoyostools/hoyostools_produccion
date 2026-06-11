@@ -8,13 +8,13 @@
           <!-- Logo B4B -->
           <div class="col-3 text-center" t-if="o.b4b">
               <img src="/l10n_co_e_invoicing/static/description/imagen_b4b.jpeg"
-                  style="max-width:90px; max-height:60px;"/>
+                  style="max-width:100px; max-height:70px;"/>
           </div>
 
           <!-- Logo Servicio Logístico -->
           <div class="col-3 text-center" t-if="o.servicio_logistico">
               <img src="/l10n_co_e_invoicing/static/description/imagen_servilog.jpeg"
-                  style="max-width:90px; max-height:60px;"/>
+                  style="max-width:100px; max-height:70px;"/>
           </div>
 
           <!-- Notas Logísticas -->
@@ -183,5 +183,37 @@
         </div>
       </t>
     </xpath>
+  </template>
+
+  <template id="external_layout_striped_inherit_manifiesto"
+            inherit_id="web.external_layout_striped">
+
+      <xpath expr="//div[@class='text-center']/ul[@class='list-inline']"
+            position="replace">
+
+          <div class="row align-items-center">
+
+              <!-- QR Manifiesto -->
+              <div class="col-2 text-start"
+                  t-if="o and o._name == 'account.move' and o.servicio_logistico">
+
+                  <img src="/l10n_co_e_invoicing/static/description/imagen_manifiesto.jpeg"
+                      style="width:180px;"/>
+
+              </div>
+
+              <!-- Footer empresa -->
+              <div t-attf-class="{{ 'col-10' if o and o._name == 'account.move' and o.servicio_logistico else 'col-12' }}">
+
+                  <ul class="list-inline mb-0">
+                      <div t-field="company.report_footer"/>
+                  </ul>
+
+              </div>
+
+          </div>
+
+      </xpath>
+
   </template>
 </odoo>
