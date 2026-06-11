@@ -8,11 +8,11 @@
         <field name="arch" type="xml">
 
             <!-- Agregar el campo en el tree de líneas -->
-            <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='price_unit']" position="after">
+            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='price_unit']" position="after">
                 <field name="contacto"/>
             </xpath>
 
-            <xpath expr="//field[@name='line_ids']/list/field[@name='tax_ids']" position="after">
+            <xpath expr="//field[@name='line_ids']/tree/field[@name='tax_ids']" position="after">
                 <field name="partner_id"/>
             </xpath>
 
