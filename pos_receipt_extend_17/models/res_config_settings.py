@@ -26,37 +26,62 @@ class ResConfigSettings(models.TransientModel):
     """Used to add new fields to the settings"""
     _inherit = "res.config.settings"
 
-    customer_details = fields.Boolean(String="Customer Details",
-                                      Help="By Enabling the customer details"
-                                           " in pos receipt",
-                                      config_parameter="pos_receipt_extend_17.customer_details")
-    customer_name = fields.Boolean(String="Customer Name",
-                                   Help="By Enabling the customer name "
-                                        "in pos receipt",
-                                   config_parameter="pos_receipt_extend_17.customer_name")
-    customer_address = fields.Boolean(String="Customer Address",
-                                      Help="By Enabling the customer Address "
-                                           "in pos receipt",
-                                      config_parameter="pos_receipt_extend_17.customer_address")
-    customer_mobile = fields.Boolean(String="Customer Mobile",
-                                     Help="By Enabling the customer mobile "
-                                          "in pos receipt",
-                                     config_parameter="pos_receipt_extend_17.customer_mobile")
-    customer_phone = fields.Boolean(String="Customer Phone",
-                                    Help="By Enabling the customer phone "
-                                         "in pos receipt",
-                                    config_parameter="pos_receipt_extend_17.customer_phone")
-    customer_email = fields.Boolean(String="Customer Email",
-                                    Help="By Enabling the customer email "
-                                         "in pos receipt",
-                                    config_parameter="pos_receipt_extend_17.customer_email")
-    customer_vat = fields.Boolean(String="Customer Vat",
-                                  Help="By Enabling the customer vat details "
-                                       "in pos receipt",
-                                  config_parameter="pos_receipt_extend_17.customer_vat")
-    cufe_cude_pos = fields.Boolean(string=" CUFE/CUDE",
-                                   help="By Enabling the CUFE/CUDE details in pos receipt",
-                                   config_parameter="pos_receipt_extend_17.cufe_cude_pos")
-    img_cufe = fields.Boolean(string="QR DEL CUFE",
-                              help="By Enabling the QR code of the CUFE in pos receipt",
-                              config_parameter="pos_receipt_extend_17.img_cufe")
+    customer_details = fields.Boolean(
+        related='pos_config_id.customer_details',
+        string=" Customer Details",
+        help="By Enabling the customer details"
+             " in pos receipt",
+        readonly=False
+    )
+    customer_name = fields.Boolean(
+        related='pos_config_id.customer_name',
+        string=" Customer Name",
+        help="By Enabling the customer name "
+             "in pos receipt",
+        readonly=False
+    )
+    customer_address = fields.Boolean(
+        related='pos_config_id.customer_address',
+        string=" Customer Address",
+        help="By Enabling the customer Address "
+             "in pos receipt",
+        readonly=False
+    )
+    customer_mobile = fields.Boolean(
+        related='pos_config_id.customer_mobile',
+        string=" Customer Mobile",
+        help="By Enabling the customer mobile "
+             "in pos receipt",
+        readonly=False
+    )
+    customer_phone = fields.Boolean(
+        related='pos_config_id.customer_phone',
+        string=" Customer Phone",
+        help="By Enabling the customer phone "
+             "in pos receipt",
+        readonly=False
+    )
+    customer_email = fields.Boolean(
+        related='pos_config_id.customer_email',
+        string=" Customer Email",
+        help="By Enabling the customer email "
+             "in pos receipt",
+        readonly=False
+    )
+    customer_vat = fields.Boolean(
+        related='pos_config_id.customer_vat',
+        string=" Customer Vat",
+        help="By Enabling the customer vat details "
+             "in pos receipt",
+        readonly=False
+    )
+    cufe_cude_pos = fields.Boolean(
+        related='pos_config_id.cufe_cude_pos',
+        string=" CUFE/CUDE",
+        readonly=False
+    )
+    img_cufe = fields.Boolean(
+        related='pos_config_id.img_cufe',
+        string="QR DEL CUFE",
+        readonly=False
+    )
