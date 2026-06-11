@@ -12,7 +12,7 @@ patch(PaymentScreen.prototype, {
         this.orm = useService("orm");
         this.pos = usePos();
       },
-    async validateOrder(isForce Validate) {
+    async validateOrder(isForceValidate) {
 //    extending  the validate order to add the below fields
         let receipt_order = await super.validateOrder(arguments);
         var receipt_number = this.pos.selectedOrder.name;
