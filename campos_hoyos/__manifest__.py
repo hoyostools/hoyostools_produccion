@@ -25,6 +25,7 @@
     ],
     'data': [
         'views/res_bank_views.xml',
+        'views/res_partner_bank_views.xml',
         'views/menu_elementos_tarifa.xml',
         'views/product_template_views.xml',
         'views/account_payment.xml',

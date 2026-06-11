@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="res_partner_bank_campos_view" model="ir.ui.view">
+            <field name="name">res.partner_bank.campos.view</field>
+            <field name="model">res.partner.bank</field>
+            <field name="inherit_id" ref="base.view_partner_bank_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='acc_holder_name']" position="after">
+                    <field name="accountbank_type"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

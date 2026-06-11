@@ -15,3 +15,4 @@ from . import stock_quant
 from . import stock_scrap
 from . import account_payment
 from . import res_bank
+from . import res_partner_bank
