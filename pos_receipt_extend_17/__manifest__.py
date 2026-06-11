@@ -30,7 +30,7 @@
     'website': "https://www.cybrosys.com",
     'company': 'Cybrosys Techno Solutions',
     'maintainer': 'Cybrosys Techno Solutions',
-    'depends': ['point_of_sale', 'sale', 'l10n_co_e_invoicing'],
+    'depends': ['point_of_sale', 'sale', 'pos_intermedio'],
     'data': [
         'views/res_config_settings_views.xml',
     ],
