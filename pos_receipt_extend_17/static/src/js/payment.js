@@ -5,7 +5,6 @@ import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { usePos } from "@point_of_sale/app/store/pos_hook";
 
-//Patching PaymentScreen
 patch(PaymentScreen.prototype, {
       setup() {
         super.setup();
@@ -17,6 +16,7 @@ patch(PaymentScreen.prototype, {
         let receipt_order = await super.validateOrder(arguments);
         var receipt_number = this.pos.selectedOrder.name;
         var orders = this.env.services.pos.selectedOrder;
+
         const data = this.env.services.pos.session_orders;
         var length = data.length-1;
         var order = data[length];
@@ -28,7 +28,7 @@ patch(PaymentScreen.prototype, {
         var name = order.customer_name;
         var customer_details = order.customer_details;
         var self = this;
-        var cufe_cude = order.account_move.dian_document_lines.cufe_cude;
+
         this.pos.customer_details = order.customer_details;
         this.pos.mobile = order.customer_mobile;
         this.pos.phone = order.customer_phone;
@@ -36,17 +36,6 @@ patch(PaymentScreen.prototype, {
         this.pos.vat = order.customer_vat;
         this.pos.address = order.customer_address;
         this.pos.name = order.customer_name;
-        this.pos.cufe_cude = order.account_move.dian_document_lines.cufe_cude;
-        // Llamar al método original de Odoo POS
-        const receipt_order = await super.validateOrder(...arguments);
-
-        // Obtener la orden actual seleccionada
-        const order = this.pos.selectedOrder;
-
-        // Si quieres, puedes guardarlo en this.pos para usarlo en otro lugar
-        this.pos.cufe = order?.cufe || "";
-        this.pos.img_cufe = order?.img_cufe || "";
-
         return receipt_order;
     },
 });

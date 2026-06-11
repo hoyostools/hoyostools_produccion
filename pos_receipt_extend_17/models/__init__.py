@@ -18,7 +18,7 @@
 #    (LGPL v3) along with this program.
 #    If not, see <http://www.gnu.org/licenses/>.
 #
-################################################################################
-from . import pos_config
+#############################################################################
+from . import pos_session
 from . import res_config_settings
 from . import pos_order
