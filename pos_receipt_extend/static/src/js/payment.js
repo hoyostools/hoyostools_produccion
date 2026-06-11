@@ -26,14 +26,7 @@ patch(PaymentScreen.prototype, {
     this.pos.vat = lastOrder.customer_vat;
     this.pos.address = lastOrder.customer_address;
     this.pos.name = lastOrder.customer_name;
-    this.pos.cufe_cude = lastOrder.account_move?.dian_document_lines?.cufe_cude;
-
     const receipt_order = await super.validateOrder(isForceValidate);
-
-    const currentOrder = this.pos.selectedOrder;
-
-    this.pos.cufe = lastOrder?.cufe || "";
-    this.pos.img_cufe = lastOrder?.img_cufe || "";
 
     return receipt_order;
 }

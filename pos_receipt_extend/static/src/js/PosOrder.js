@@ -22,6 +22,8 @@ patch(Order.prototype, {
             result.headerData.customer_vat = this.partner.vat;
         }
 
+        // These values are assigned from ReceiptScreen after the order
+        // has been validated and saved in the backend.
         result.headerData.cufe_cude = this.cufe || "";
         result.headerData.img_cufe = this.img_cufe || "";
 
