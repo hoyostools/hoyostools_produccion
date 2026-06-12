@@ -15,7 +15,7 @@ class StockQuant(models.Model):
                     (0, 0, {
                         'product_id': quant.product_id.id,
                         'location_id': quant.location_id.id,
-                        'available_qty': quant.quantity,
+                        'available_qty': quant.quant_available,
                     }) for quant in self
                 ]
             }

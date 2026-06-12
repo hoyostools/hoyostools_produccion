@@ -8,6 +8,11 @@
 
                 <group>
                     <field name="picking_type_id"/>
+                    <field name="transfer_mode"/>
+
+                    <field name="destination_location_id"
+                           invisible="transfer_mode != 'same'"
+                           required="transfer_mode == 'same'"/>
                     <field name="state_option"/>
                     <field name="user_id"
                            invisible="state_option in ['done']"/>
@@ -15,11 +20,11 @@
 
                 <field name="line_ids">
                     <tree editable="bottom">
-                        <field name="product_id"/>
-                        <field name="location_id"/>
-                        <field name="available_qty"/>
+                        <field name="product_id" readonly="1" force_save="1"/>
+                        <field name="location_id" readonly="1" force_save="1"/>
+                        <field name="available_qty" readonly="1" force_save="1"/>
                         <field name="qty_to_move"/>
-                        <field name="location_dest_id"/>
+                        <field name="location_dest_id" invisible="parent.transfer_mode == 'same'"/>
                     </tree>
                 </field>
 

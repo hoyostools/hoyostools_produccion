@@ -1,12 +1,14 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+import logging
+_logger = logging.getLogger(__name__)
 
 class StockTransferWizardLine(models.TransientModel):
     _name = 'stock.transfer.wizard.line'
 
     wizard_id = fields.Many2one('stock.transfer.wizard')
 
-    product_id = fields.Many2one('product.product', readonly=True)
+    product_id = fields.Many2one('product.product', readonly=True, store=True)
     location_id = fields.Many2one('stock.location', readonly=True)
 
     available_qty = fields.Float(string="Disponible", readonly=True)
@@ -16,11 +18,4 @@ class StockTransferWizardLine(models.TransientModel):
     location_dest_id = fields.Many2one(
         'stock.location',
         string="Ubicación destino",
-        required=True
     )
-
-    @api.constrains('qty_to_move')
-    def _check_qty(self):
-        for rec in self:
-            if rec.qty_to_move > rec.available_qty:
-                raise UserError("Cantidad mayor a la disponible")

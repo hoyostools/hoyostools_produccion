@@ -9,7 +9,7 @@
                 <header>
                     <button name="action_open_transfer_wizard"
                             type="object"
-                            string="Trasladar 2"
+                            string="Trasladar Masivos"
                             class="btn-primary"/>
                 </header>
             </xpath>
