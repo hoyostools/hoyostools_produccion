@@ -377,7 +377,7 @@ class SemiAutoReconciliationLine(models.TransientModel):
                     "partner_type": "customer",
                     "partner_id": partner_id,
                     "amount": debit_total,
-                    "date": fields.Datetime.now().date(),
+                    "date": fields.Date.context_today(self),
                     "journal_id": payment_journal.id,
                     "payment_method_line_id": payment_method_line.id,
                     "ref": f"Cruce {cruce_name}",
@@ -453,7 +453,7 @@ class SemiAutoReconciliationLine(models.TransientModel):
                 cruce = self.env["cruce.saldos"].create({
                     "name": cruce_name,
                     "partner_id": partner_id,
-                    "date": fields.Datetime.now().date(),
+                    "date": fields.Date.context_today(self),
                     "total_amount": debit_total,
                     "move_id": pay_move.id,  # principal = move del pago
                 })
@@ -544,7 +544,7 @@ class SemiAutoReconciliationLine(models.TransientModel):
             # -----------------------------------------------------------------
             # 5) Por cada fecha: armar conjunto de líneas (facturas parcializadas + recaudos/NC)
             # -----------------------------------------------------------------
-            cruce_date = fields.Date.today()
+            cruce_date = fields.Date.context_today(self)
 
             group_total = sum(abs(l.amount_to_apply) for l in recaudo_nc_lines)
 

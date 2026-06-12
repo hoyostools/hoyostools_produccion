@@ -339,15 +339,6 @@ class SemiAutoReconciliationSupplierLine(models.TransientModel):
             )
             return aml[:1]
 
-        def _get_payment_nc_date(wl):
-            if wl.document_type == 'payment':
-                return wl.payment_id.date
-
-            if wl.document_type == 'credit_note':
-                return wl.move_id.date or wl.move_id.invoice_date
-
-            return False
-
         journal = self.env['account.journal'].search([
             ('name', '=', 'Cruce Proveedores')
         ], limit=1)
@@ -410,19 +401,6 @@ class SemiAutoReconciliationSupplierLine(models.TransientModel):
                     f'con pagos/NC ({total_credits}).'
                 )
 
-            # groups_by_date = {}
-
-            # for l in payment_nc_lines:
-            #     d = _get_payment_nc_date(l)
-
-            #     if not d:
-            #         raise UserError(
-            #             'No se pudo determinar la fecha del documento.'
-            #         )
-
-            #     groups_by_date.setdefault(d, []).append(l)
-
-            # sorted_dates = sorted(groups_by_date.keys())
 
             invoice_queue = sorted(
                 invoice_lines,
@@ -474,7 +452,7 @@ class SemiAutoReconciliationSupplierLine(models.TransientModel):
                     'voucher_type': 'pago',
                     'partner_id': partner_id,
                     'amount': debit_total,
-                    'date': fields.Datetime.now().date(),
+                    'date': fields.Date.context_today(self),
                     'journal_id': journal.id,
                     'payment_method_line_id': payment_method_line.id,
                     'ref': f'Cruce {cruce_name}',
@@ -567,7 +545,7 @@ class SemiAutoReconciliationSupplierLine(models.TransientModel):
                 ].create({
                     'name': cruce_name,
                     'partner_id': partner_id,
-                    'date': fields.Date.today(),
+                    'date': fields.Date.context_today(self),
                     'total_amount': debit_total,
                     'move_id': pay_move.id,
                 })
@@ -657,130 +635,130 @@ class SemiAutoReconciliationSupplierLine(models.TransientModel):
                         'credit_amount_currency': amount,
                     })
 
-                cruce_date = fields.Date.today()
-                needed = total_credits
-                normalized_lines = []
+            cruce_date = fields.Date.context_today(self)
+            needed = total_credits
+            normalized_lines = []
 
-                for inv in invoice_queue:
-                    if float_is_zero(needed, precision_digits=precision):
-                        break
+            for inv in invoice_queue:
+                if float_is_zero(needed, precision_digits=precision):
+                    break
 
-                    rem = invoice_remaining.get(inv.id, 0.0)
+                rem = invoice_remaining.get(inv.id, 0.0)
 
-                    if float_is_zero(rem, precision_digits=precision):
-                        continue
+                if float_is_zero(rem, precision_digits=precision):
+                    continue
 
-                    take = (
-                        rem
-                        if float_compare(rem, needed, precision_digits=precision) <= 0
-                        else needed
-                    )
+                take = (
+                    rem
+                    if float_compare(rem, needed, precision_digits=precision) <= 0
+                    else needed
+                )
 
-                    invoice_remaining[inv.id] = rem - take
-                    needed -= take
+                invoice_remaining[inv.id] = rem - take
+                needed -= take
 
-                    normalized_lines.append({
-                        'document_type': 'invoice',
-                        'move': inv.move_id,
-                        'move_id': inv.move_id.id,
-                        'payment_id': False,
-                        'amount': take,
-                        'label': inv.move_id.name,
-                    })
+                normalized_lines.append({
+                    'document_type': 'invoice',
+                    'move': inv.move_id,
+                    'move_id': inv.move_id.id,
+                    'payment_id': False,
+                    'amount': take,
+                    'label': inv.move_id.name,
+                })
 
-                    discount_amount = inv.discount or 0.0
+                discount_amount = inv.discount or 0.0
 
-                    if (
+                if (
                         discount_amount
                         and not float_is_zero(discount_amount, precision_digits=precision)
                         and float_compare(
-                            inv.amount_to_apply,
-                            inv.debit - discount_amount,
-                            precision_digits=precision
-                        ) == 0
-                    ):
-                        discount_journal = self.env['account.journal'].browse(1964)
+                    inv.amount_to_apply,
+                    inv.debit - discount_amount,
+                    precision_digits=precision
+                ) == 0
+                ):
+                    discount_journal = self.env['account.journal'].browse(1964)
 
-                        if not discount_journal.exists():
-                            raise UserError(
-                                'No existe el diario de descuento financiero con ID 1964.'
-                            )
+                    if not discount_journal.exists():
+                        raise UserError(
+                            'No existe el diario de descuento financiero con ID 1964.'
+                        )
 
-                        payable_line = inv.move_id.line_ids.filtered(
-                            lambda l: (
+                    payable_line = inv.move_id.line_ids.filtered(
+                        lambda l: (
                                 l.account_id.account_type == 'liability_payable'
                                 and not l.reconciled
-                            )
-                        )[:1]
+                        )
+                    )[:1]
 
-                        if not payable_line:
-                            raise UserError(
-                                f'No se encontró cuenta por pagar abierta en {inv.move_id.name}.'
-                            )
+                    if not payable_line:
+                        raise UserError(
+                            f'No se encontró cuenta por pagar abierta en {inv.move_id.name}.'
+                        )
 
-                        credit_note = self.env['account.move'].create({
-                            'move_type': 'in_refund',
-                            'partner_id': partner_id,
-                            'invoice_date': cruce_date,
-                            'date': cruce_date,
-                            'journal_id': discount_journal.id,
-                            'ref': f'Descuento {inv.move_id.name}',
-                            'invoice_line_ids': [(0, 0, {
-                                'name': 'Descuento financiero',
-                                'quantity': 1,
-                                'price_unit': discount_amount,
-                                'account_id': payable_line.account_id.id,
-                            })],
-                        })
+                    credit_note = self.env['account.move'].create({
+                        'move_type': 'in_refund',
+                        'partner_id': partner_id,
+                        'invoice_date': cruce_date,
+                        'date': cruce_date,
+                        'journal_id': discount_journal.id,
+                        'ref': f'Descuento {inv.move_id.name}',
+                        'invoice_line_ids': [(0, 0, {
+                            'name': 'Descuento financiero',
+                            'quantity': 1,
+                            'price_unit': discount_amount,
+                            'account_id': payable_line.account_id.id,
+                        })],
+                    })
 
-                        credit_note.action_post()
+                    credit_note.action_post()
 
-                        cn_line = credit_note.line_ids.filtered(
-                            lambda l: (
+                    cn_line = credit_note.line_ids.filtered(
+                        lambda l: (
                                 l.account_id.account_type == 'liability_payable'
                                 and not l.reconciled
-                            )
-                        )[:1]
+                        )
+                    )[:1]
 
-                        if payable_line and cn_line:
-                            (payable_line + cn_line).reconcile()
+                    if payable_line and cn_line:
+                        (payable_line + cn_line).reconcile()
 
-                if not float_is_zero(needed, precision_digits=precision):
-                    raise UserError(
-                        f'No hay suficiente saldo de facturas para cubrir el cruce por {total_credits}.'
-                    )
-
-                for l in payment_nc_lines:
-                    if l.document_type == 'payment':
-                        move = l.payment_id.move_id
-                        label = l.payment_id.name or move.name
-
-                        normalized_lines.append({
-                            'document_type': 'payment',
-                            'move': move,
-                            'move_id': False,
-                            'payment_id': l.payment_id.id,
-                            'amount': l.amount_to_apply,
-                            'label': label,
-                        })
-
-                    else:
-                        move = l.move_id
-                        label = move.name
-
-                        normalized_lines.append({
-                            'document_type': 'credit_note',
-                            'move': move,
-                            'move_id': move.id,
-                            'payment_id': False,
-                            'amount': l.amount_to_apply,
-                            'label': label,
-                        })
-
-                _process_single_cruce(
-                    cruce_date,
-                    normalized_lines
+            if not float_is_zero(needed, precision_digits=precision):
+                raise UserError(
+                    f'No hay suficiente saldo de facturas para cubrir el cruce por {total_credits}.'
                 )
+
+            for l in payment_nc_lines:
+                if l.document_type == 'payment':
+                    move = l.payment_id.move_id
+                    label = l.payment_id.name or move.name
+
+                    normalized_lines.append({
+                        'document_type': 'payment',
+                        'move': move,
+                        'move_id': False,
+                        'payment_id': l.payment_id.id,
+                        'amount': l.amount_to_apply,
+                        'label': label,
+                    })
+
+                else:
+                    move = l.move_id
+                    label = move.name
+
+                    normalized_lines.append({
+                        'document_type': 'credit_note',
+                        'move': move,
+                        'move_id': move.id,
+                        'payment_id': False,
+                        'amount': l.amount_to_apply,
+                        'label': label,
+                    })
+
+            _process_single_cruce(
+                cruce_date,
+                normalized_lines
+            )
 
         self.search([]).unlink()
 
