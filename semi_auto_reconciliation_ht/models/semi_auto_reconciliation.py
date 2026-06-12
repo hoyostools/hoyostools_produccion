@@ -53,12 +53,24 @@ class SemiAutoReconciliationLine(models.TransientModel):
     currency_id = fields.Many2one('res.currency', string='Moneda')
     company_id = fields.Many2one('res.company', string='Compañía', default=lambda self: self.env.company, readonly=True)
     discount = fields.Monetary(string='Descuento financiero', compute='_compute_discount')
+    can_edit_discount = fields.Boolean(
+        compute='_compute_can_edit_discount',
+        store=False
+    )
+
+    def _compute_can_edit_discount(self):
+        group = self.env.user.has_group(
+            'semi_auto_reconciliation_ht.group_financial_director'
+        )
+
+        for record in self:
+            record.can_edit_discount = group
 
     def _compute_discount(self):
         for record in self:
             record.discount = 0.0
             if record.due_date:
-                if record.due_date > date.today():
+                if (record.due_date + timedelta(days=5)) > date.today():
                     record.discount = record.move_id.amount_untaxed * (record.invoice_payment_term_id.discount_percentage / 100)
 
     # ==============================

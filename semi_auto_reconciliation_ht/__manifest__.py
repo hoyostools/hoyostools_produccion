@@ -22,6 +22,7 @@
     'depends': ['account'],
     'data': [
         'data/journal_data.xml',
+        'data/groups.xml',
         'security/ir.model.access.csv',
         'views/wizard_select_clients_view.xml',
         'views/semi_auto_reconciliation_views.xml',
