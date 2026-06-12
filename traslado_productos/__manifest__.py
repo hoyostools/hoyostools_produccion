@@ -1,7 +1,7 @@
 {
     'name': 'Transferencia de ubicación de existencias',
     'version': '1.0',
-    'depends': ['stock'],
+    'depends': ['stock', 'campos_hoyos'],
     'data': [
         'security/ir.model.access.csv',
         'views/stock_quant_view.xml',
