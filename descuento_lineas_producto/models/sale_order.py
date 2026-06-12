@@ -9,7 +9,7 @@ class SaleOrderLine(models.Model):
         for group in self.env.user.groups_id:
             if group.display_name in ['Ventas / Administrador', 'Ventas / Asistentes Comerciales',
                                       'Ventas / Dir Comerciales', 'Compra / Analista de Compras',
-                                      'Compra / Administrador', 'Compra / Usuario']:
+                                      'Compra / Administrador', 'Compra / Usuario', 'Ventas / Asesores Full Marketplace']:
                 return True
         return False
 

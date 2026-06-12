@@ -3,24 +3,30 @@
 
   <xpath expr="//div[@id='informations']" position="before">
 
-      <div class="row mt-3 mb-2" style="font-size:11px; line-height:1.2;">
+      <div class="row" style="font-size:13px; line-height:1.2;">
 
           <!-- Logo B4B -->
-          <div class="col-3 text-center" t-if="o.b4b">
+          <div class="col-2 text-center" t-if="o.b4b">
               <img src="/l10n_co_e_invoicing/static/description/imagen_b4b.jpeg"
                   style="max-width:100px; max-height:70px;"/>
           </div>
 
           <!-- Logo Servicio Logístico -->
-          <div class="col-3 text-center" t-if="o.servicio_logistico">
+          <div class="col-2 text-center" t-if="o.servicio_logistico">
               <img src="/l10n_co_e_invoicing/static/description/imagen_servilog.jpeg"
                   style="max-width:100px; max-height:70px;"/>
           </div>
 
           <!-- Notas Logísticas -->
-          <div class="col-6" t-if="o.notas_logisticas">
+          <div class="col-5" t-if="o.notas_logisticas">
               <strong>Notas Logísticas</strong><br/>
               <span t-field="o.notas_logisticas"/>
+          </div>
+
+          <!-- Asesor -->
+          <div class="col-3" t-if="o.partner_id.user_id.name">
+              <strong>Asesor</strong><br/>
+              <span t-field="o.partner_id.user_id.name"/>
           </div>
 
       </div>

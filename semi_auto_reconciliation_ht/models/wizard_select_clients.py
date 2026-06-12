@@ -52,7 +52,7 @@ class SelectClientsWizard(models.TransientModel):
                 ('move_type', '=', 'out_invoice'),
                 ('state', '=', 'posted'),
                 ('payment_state', '!=', 'paid'),
-                ('amount_residual', '>', 0),
+                ('amount_residual_signed', '>', 0),
                 ('partner_id', 'in', all_partner_ids),
             ])
 
@@ -60,7 +60,7 @@ class SelectClientsWizard(models.TransientModel):
                 ('move_type', '=', 'out_refund'),
                 ('state', '=', 'posted'),
                 ('payment_state', '!=', 'paid'),
-                ('amount_residual', '>', 0),
+                ('amount_residual_signed', '>', 0),
                 ('partner_id', 'in', all_partner_ids),
             ])
 

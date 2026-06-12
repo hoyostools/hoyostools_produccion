@@ -97,7 +97,7 @@
             <div style="text-align: center;">
                 <t t-if="props.data.headerData.img_cufe">
                     <img t-att-src="'data:image/png;base64,' + props.data.headerData.img_cufe"
-                         style="width:110px; height:110px;" />
+                         style="width:130px; height:130px;" />
                 </t>
                 <t t-elif="!props.data.headerData.img_cufe || props.data.headerData.img_cufe == ''">
                     <img id="posqrcode"

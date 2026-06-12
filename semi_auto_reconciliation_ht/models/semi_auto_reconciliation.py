@@ -11,7 +11,7 @@ from odoo.tools.float_utils import float_compare, float_round, float_is_zero
 _logger = logging.getLogger(__name__)
 
 
-class SemiAutoReconciliationLine(models.TransientModel):
+class SemiAutoReconciliationLine(models.Model):
     _name = 'semi.auto.reconciliation.line'
     _description = 'Línea de conciliación semiautomática'
 
@@ -144,14 +144,14 @@ class SemiAutoReconciliationLine(models.TransientModel):
             ('move_type', '=', 'out_invoice'),
             ('state', '=', 'posted'),
             ('payment_state', '!=', 'paid'),
-            ('amount_residual', '>', 0),
+            ('amount_residual_signed', '>', 0),
             ('partner_id', 'in', all_partner_ids),
         ])
         credit_notes = self.env['account.move'].search([
             ('move_type', '=', 'out_refund'),
             ('state', '=', 'posted'),
             ('payment_state', '!=', 'paid'),
-            ('amount_residual', '>', 0),
+            ('amount_residual_signed', '>', 0),
             ('partner_id', 'in', all_partner_ids),
         ])
         payments = self.env['account.payment'].search([
@@ -169,7 +169,7 @@ class SemiAutoReconciliationLine(models.TransientModel):
                     'partner_id': partner.id,  # Asociar al contacto principal
                     'move_id': inv.id,
                     'document_type': 'invoice',
-                    'debit': inv.amount_residual,
+                    'debit': inv.amount_residual_signed,
                     'credit': 0.0,
                     'amount_to_apply': 0.0,
                     'currency_id': inv.currency_id.id,
@@ -181,7 +181,7 @@ class SemiAutoReconciliationLine(models.TransientModel):
                     'move_id': cr.id,
                     'document_type': 'credit_note',
                     'debit': 0.0,
-                    'credit': cr.amount_residual,
+                    'credit': cr.amount_residual_signed,
                     'amount_to_apply': 0.0,
                     'currency_id': cr.currency_id.id,
                 }))
